@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -25,7 +26,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = $this->question->paginate(10);
+        $questions = $this->question->with('user')->paginate(10);
         return view('frontends.questions.index', compact('questions'));
     }
 

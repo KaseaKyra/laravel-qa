@@ -18,7 +18,7 @@ class Question extends Model
      */
     function user()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -29,5 +29,21 @@ class Question extends Model
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = Str::slug($value);
+    }
+
+    /**
+     * @return string
+     */
+    function getUrlAttribute()
+    {
+        return route('questions.show', $this->id);
+    }
+
+    /**
+     * @return mixed
+     */
+    function getCreatedDateAttribute()
+    {
+        return $this->created_at->diffForHumans();
     }
 }

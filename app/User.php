@@ -43,6 +43,15 @@ class User extends Authenticatable
      */
     function questions()
     {
-        return $this->hasMany(Question::class, 'user_id', 'id');
+        return $this->hasMany(Question::class);
+    }
+
+    /**
+     * @return string
+     */
+    function getUrlAttribute()
+    {
+//        return route('questions.show', $this->id);
+        return '#';
     }
 }
