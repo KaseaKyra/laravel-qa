@@ -10,8 +10,8 @@ $factory->define(Question::class, function (Faker $faker) {
     return [
         'title' => rtrim($faker->sentence(rand(5, 10)), '. \t\n\r\0\x0B'),
         'body' => $faker->paragraphs(rand(3, 7), true),
-        'view' => 0,
-        'answer' => 0,
-        'vote' => 0,
+        'view' => rand(0, 5),
+        'answer' => rand(0, 5),
+        'vote' => rand(0, 5),
     ];
 });
