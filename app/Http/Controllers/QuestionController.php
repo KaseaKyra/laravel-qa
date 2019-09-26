@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AskQuestionRequest;
 use App\Question;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use function Sodium\increment;
 
 class QuestionController extends Controller
 {
@@ -58,7 +58,7 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $id
+     * @param Question $question
      * @return void
      */
     public function show(Question $question)
@@ -76,6 +76,9 @@ class QuestionController extends Controller
     public function edit($id)
     {
         $question = $this->question->find($id);
+        if (\Gate::denies('update-question', $question)) {
+            abort(403, 'Access denied');
+        }
         return view('frontends.questions.edit', compact('question'));
     }
 
@@ -89,6 +92,9 @@ class QuestionController extends Controller
     public function update(AskQuestionRequest $request, $id)
     {
         $question = $this->question->find($id);
+        if (\Gate::denies('update-question', $question)) {
+            abort(403, 'Access denied');
+        }
         $question->update($request->only('title', 'body'));
         return redirect()->route('questions.index')->with('success', 'Your question has been updated');
     }
@@ -101,7 +107,11 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        $this->question->find($id)->delete();
+        $question = $this->question->find($id);
+        if (\Gate::denies('delete-question', $question)) {
+            abort(403, 'Access denied');
+        }
+        $question->delete();
         return redirect()->route('questions.index')->with('success', 'Your question has been deleted');
     }
 }
