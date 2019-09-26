@@ -23,8 +23,8 @@
                                         <strong>{{ $question->vote }}</strong> {{ Str::plural('vote', $question->vote) }}
                                     </div>
                                     <div class="status {{ $question->status }}">
-                                        <strong>{{ $question->answer }}</strong>
-                                        {{ Str::plural('answer', $question->answer) }}
+                                        <strong>{{ $question->answer_count}}</strong>
+                                        {{ Str::plural('answer', $question->answer_count) }}
                                     </div>
                                     <div class="view">
                                         {{ $question->view . " " . Str::plural('view', $question->view) }}
@@ -36,7 +36,7 @@
                                             <a href="{{ $question->url }}">{{ $question->title }}</a>
                                         </h3>
                                         <div class="ml-auto">
-                                            {{--                                            authorize the the question using Gate--}}
+                                            {{--authorize the the question using Gate--}}
                                             {{--                                            @if(Auth::user()->can('update-question', $question))--}}
                                             {{--                                                <a href="{{ route('questions.edit', [$question->id]) }}"--}}
                                             {{--                                                   class="btn btn-sm btn-outline-info">Edit</a>--}}
@@ -52,7 +52,7 @@
                                             {{--                                                    </button>--}}
                                             {{--                                                </form>--}}
                                             {{--                                            @endif--}}
-                                            {{--                                            authorize the the question using Policy--}}
+                                            {{--authorize the the question using Policy--}}
                                             @can('update', $question)
                                                 <a href="{{ route('questions.edit', [$question->id]) }}"
                                                    class="btn btn-sm btn-outline-info">Edit</a>

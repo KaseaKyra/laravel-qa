@@ -52,7 +52,7 @@ class Question extends Model
      */
     function getStatusAttribute()
     {
-        if ($this->answer > 0) {
+        if ($this->answer_count > 0) {
             if ($this->best_answer_id) {
                 return 'answered-accepted';
             }
@@ -67,5 +67,10 @@ class Question extends Model
     public function getBodyHtmlAttribute()
     {
         return \Parsedown::instance()->text($this->body);
+    }
+
+    public function answer()
+    {
+        return $this->hasMany(Answer::class);
     }
 }

@@ -53,7 +53,7 @@ class QuestionPolicy
      */
     public function update(User $user, Question $question)
     {
-        return $question->user_id == $user->id && $question->answer < 1;
+        return $question->user_id == $user->id && $question->answer_count < 1;
     }
 
     /**
@@ -65,7 +65,7 @@ class QuestionPolicy
      */
     public function delete(User $user, Question $question)
     {
-        return $question->user_id == $user->id && $question->answer < 1;
+        return $question->user_id == $user->id && $question->answer_count < 1;
     }
 
     /**
