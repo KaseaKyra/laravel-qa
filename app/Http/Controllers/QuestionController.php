@@ -73,19 +73,22 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = $this->question->find($id);
+        return view('frontends.questions.edit', compact('question'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param AskQuestionRequest $request
      * @param int $id
      * @return void
      */
-    public function update(Request $request, $id)
+    public function update(AskQuestionRequest $request, $id)
     {
-        //
+        $question = $this->question->find($id);
+        $question->update($request->only('title', 'body'));
+        return redirect()->route('questions.index')->with('success', 'Your question has been updated');
     }
 
     /**

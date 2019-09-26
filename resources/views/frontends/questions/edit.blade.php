@@ -15,8 +15,9 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('questions.store') }}" method="post">
-                            @include('frontends.layouts.partials._form', ['buttonText' => 'Ask question'])
+                        <form action="{{ route('questions.update', [$question->id]) }}" method="post">
+                            {{ method_field('PUT') }}
+                            @include('frontends.layouts.partials._form', ['buttonText' => 'update question'])
                         </form>
                     </div>
                 </div>
