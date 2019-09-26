@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AskQuestionRequest;
 use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -26,7 +27,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        $questions = $this->question->with('user')->paginate(10);
+        $questions = $this->question->with('user')->latest()->paginate(10);
         return view('frontends.questions.index', compact('questions'));
     }
 
@@ -37,18 +38,20 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        $question = new Question();
+        return view('frontends.questions.create', compact('question'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param AskQuestionRequest $request
      * @return void
      */
-    public function store(Request $request)
+    public function store(AskQuestionRequest $request)
     {
-        //
+        $request->user()->questions()->create($request->only('title', 'body'));
+        return redirect()->route('questions.index')->with('success', 'Your question has been asked');
     }
 
     /**
