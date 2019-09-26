@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AskQuestionRequest;
 use App\Question;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -15,9 +16,11 @@ class QuestionController extends Controller
 
     /**
      * QuestionController constructor.
+     * @param Question $question
      */
     public function __construct(Question $question)
     {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
         $this->question = $question;
     }
 
@@ -72,13 +75,24 @@ class QuestionController extends Controller
      *
      * @param int $id
      * @return void
+     * @throws AuthorizationException
      */
     public function edit($id)
     {
         $question = $this->question->find($id);
-        if (\Gate::denies('update-question', $question)) {
-            abort(403, 'Access denied');
-        }
+
+        /*
+         * authorize the question using Gate
+         */
+//        if (\Gate::denies('update-question', $question)) {
+//            abort(403, 'Access denied');
+//        }
+
+        /*
+         * authorize the question using Policy
+         */
+        $this->authorize('update', $question);
+
         return view('frontends.questions.edit', compact('question'));
     }
 
@@ -88,13 +102,24 @@ class QuestionController extends Controller
      * @param AskQuestionRequest $request
      * @param int $id
      * @return void
+     * @throws AuthorizationException
      */
     public function update(AskQuestionRequest $request, $id)
     {
         $question = $this->question->find($id);
-        if (\Gate::denies('update-question', $question)) {
-            abort(403, 'Access denied');
-        }
+
+        /*
+         * authorize the question using Gate
+         */
+//        if (\Gate::denies('update-question', $question)) {
+//            abort(403, 'Access denied');
+//        }
+
+        /*
+         * authorize the question using policy
+         */
+        $this->authorize('update', $question);
+
         $question->update($request->only('title', 'body'));
         return redirect()->route('questions.index')->with('success', 'Your question has been updated');
     }
@@ -104,13 +129,24 @@ class QuestionController extends Controller
      *
      * @param int $id
      * @return void
+     * @throws AuthorizationException
      */
     public function destroy($id)
     {
         $question = $this->question->find($id);
-        if (\Gate::denies('delete-question', $question)) {
-            abort(403, 'Access denied');
-        }
+
+        /*
+         * authorize the the question using Gate
+         */
+//        if (\Gate::denies('delete-question', $question)) {
+//            abort(403, 'Access denied');
+//        }
+
+        /*
+         * authorize the the question using Policy
+         */
+        $this->authorize('delete', $question);
+
         $question->delete();
         return redirect()->route('questions.index')->with('success', 'Your question has been deleted');
     }
