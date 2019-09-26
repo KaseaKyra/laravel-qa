@@ -99,6 +99,7 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->question->find($id)->delete();
+        return redirect()->route('questions.index')->with('success', 'Your question has been deleted');
     }
 }
