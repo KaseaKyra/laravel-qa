@@ -7,6 +7,7 @@ use App\Question;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use function Sodium\increment;
 
 class QuestionController extends Controller
 {
@@ -57,12 +58,13 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param $id
      * @return void
      */
-    public function show($id)
+    public function show(Question $question)
     {
-        //
+        $question->increment('view');
+        return view('frontends.questions.show', compact('question'));
     }
 
     /**
