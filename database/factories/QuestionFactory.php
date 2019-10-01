@@ -15,3 +15,4 @@ $factory->define(Question::class, function (Faker $faker) {
         'vote' => rand(0, 5),
     ];
 });
+

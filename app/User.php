@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use MongoDB\BSON\Type;
 
 class User extends Authenticatable
 {
@@ -58,5 +59,12 @@ class User extends Authenticatable
     public function answer()
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function getAvatarAttribute()
+    {
+        $email = $this->email;
+        $size = 40;
+        return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?d=&s=" . $size;
     }
 }
