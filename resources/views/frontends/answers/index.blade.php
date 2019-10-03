@@ -8,12 +8,7 @@
                     <div class="card-body">
                         <div class="card-title">
                             <div class="d-flex align-items-center">
-                                <h2>{{ $question->title }}</h2>
-                                <div class="ml-auto">
-                                    <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">Back to
-                                        list
-                                        question</a>
-                                </div>
+                                <h2>The question</h2>
                             </div>
                         </div>
                         <hr>
@@ -57,10 +52,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">
-                            <h2>{{ $question->answer_count . " " . Str::plural('Answer', $question->answer_count) }}</h2>
+                            <h2>{{ $answersCount . " " . Str::plural('Answer', $answersCount) }}</h2>
                         </div>
                         <hr>
-                        @foreach($question->answers as $answer)
+                        @include("frontends.layouts.partials._messages")
+                        @foreach($answers as $answer)
                             <div class="media">
                                 <div class="d-flex flex-column vote-controls">
                                     <a href="" title="This answer is useful" class="vote-up">
@@ -95,10 +91,6 @@
                 </div>
             </div>
         </div>
+        @include("frontends.answers.create")
     </div>
-    @include("frontends.answers.index", [
-          'answers' => $question->answers,
-          'answersCount' => $question->answer_count,
-    ])
-    @in
 @endsection

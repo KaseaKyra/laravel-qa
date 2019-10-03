@@ -81,6 +81,9 @@
 
             <div class="content">
                 <div class="title m-b-md">
+                    <a href="{{ route('questions.index') }}">Questions</a>
+                </div>
+                <div class="title m-b-md">
                     Laravel
                 </div>
 

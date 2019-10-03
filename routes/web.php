@@ -24,3 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 /** @var Router $router */
 $router->resource('questions', 'QuestionController')->except('show');
 $router->get('/questions/{slug}', 'QuestionController@show')->name('questions.show');
+//answer model
+$router->resource('questions.answers', 'AnswerController')->except('index', 'create', 'show');
+//$router->post('/questions/{question}/answers', 'AnswerController@store')->name('answers.store');
+
