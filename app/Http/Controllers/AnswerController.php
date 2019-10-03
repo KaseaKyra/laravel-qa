@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
 use App\Question;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class AnswerController extends Controller
@@ -58,24 +59,34 @@ class AnswerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param Question $question
+     * @param Answer $answer
      * @return void
+     * @throws AuthorizationException
      */
-    public function edit($id)
+    public function edit(Question $question, Answer $answer)
     {
-        //
+        $this->authorize('update', $answer);
+        return view('frontends.answers.edit', compact('question', 'answer'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param Question $question
+     * @param Answer $answer
      * @return void
+     * @throws AuthorizationException
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Question $question, Answer $answer)
     {
-        //
+        $this->authorize('update', $answer);
+        $answer->update($request->validate([
+            'body' => 'required',
+        ]));
+        return redirect()->route('questions.show', $question->slug)
+            ->with('success', 'You has been updated your answer successfully');
     }
 
     /**
