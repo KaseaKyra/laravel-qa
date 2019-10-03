@@ -92,11 +92,15 @@ class AnswerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Question $question
+     * @param Answer $answer
      * @return void
+     * @throws AuthorizationException
      */
-    public function destroy($id)
+    public function destroy(Question $question, Answer $answer)
     {
-        //
+        $this->authorize('delete', $answer);
+        $answer->delete();
+        return back()->with('success', 'You have been deleted answered successfully');
     }
 }
