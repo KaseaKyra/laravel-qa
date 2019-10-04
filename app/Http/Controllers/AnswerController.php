@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Answer;
 use App\Question;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -110,5 +111,17 @@ class AnswerController extends Controller
         $this->authorize('delete', $answer);
         $answer->delete();
         return back()->with('success', 'You have been deleted answered successfully');
+    }
+
+    /**
+     * @param Answer $answer
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     */
+    public function __invoke(Answer $answer)
+    {
+        $this->authorize('accept', $answer);
+        $answer->question->acceptBestAnswer($answer);
+        return back();
     }
 }

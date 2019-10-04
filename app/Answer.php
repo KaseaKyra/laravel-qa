@@ -25,7 +25,7 @@ class Answer extends Model
 
     public function getStatusAttribute()
     {
-        return $this->id == $this->question->best_answer_id ? 'vote_accepted' : '';
+        return $this->isBest() ? 'vote_accepted' : '';
     }
 
     public static function boot()
@@ -44,5 +44,15 @@ class Answer extends Model
     function getCreatedDateAttribute()
     {
         return $this->created_at->diffForHumans();
+    }
+
+    function getIsBestAttribute()
+    {
+        return $this->isBest();
+    }
+
+    public function isBest()
+    {
+        return $this->id == $this->question->best_answer_id;
     }
 }

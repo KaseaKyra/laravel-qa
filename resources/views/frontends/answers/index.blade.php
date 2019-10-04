@@ -9,6 +9,10 @@
                         <div class="card-title">
                             <div class="d-flex align-items-center">
                                 <h2>The question</h2>
+                                <div class="ml-auto">
+                                    <a href="{{ route('questions.index') }}" class="btn btn-outline-secondary">Back to
+                                        list question</a>
+                                </div>
                             </div>
                         </div>
                         <hr>
@@ -58,6 +62,7 @@
                         @include("frontends.layouts.partials._messages")
                         @foreach($answers as $answer)
                             <div class="media">
+                                {{---------------------ANSWER - VOTE + BEST ANSWER---------------------}}
                                 <div class="d-flex flex-column vote-controls">
                                     <a href="" title="This answer is useful" class="vote-up">
                                         <i class="fas fa-caret-up fa-3x"></i>
@@ -66,13 +71,33 @@
                                     <a href="" title="This answer is not useful" class="vote-down off">
                                         <i class="fas fa-caret-down fa-3x"></i>
                                     </a>
-                                    <a href="" title="Mark answer as best answer" class="{{ $answer->status }}">
-                                        <i class="fas fa-check fa-2x"></i>
-                                    </a>
+                                    @can('accept', $answer)
+                                        <a id="markBestAns" href="" title="Mark answer as best answer"
+                                           class="{{ $answer->status }}"
+                                           onclick="event.preventDefault();
+                                               document.getElementById('accept-answer-{{ $answer->id }}').submit();
+                                               document.getElementById('markBestAns').classList.add('vote-accepted');
+                                               ">
+                                            <i class="fas fa-check fa-2x"></i>
+                                        </a>
+                                        <form action="{{ route('answers.accept', [$answer->id]) }}"
+                                              id="accept-answer-{{ $answer->id }}" method="post"
+                                              style="display:none">
+                                            @csrf
+                                        </form>
+                                    @else
+                                        @if($answer->is_best)
+                                            <a id="markBestAns" href="" title="Mark answer as best answer"
+                                               class="{{ $answer->status }}">
+                                                <i class="fas fa-check fa-2x"></i>
+                                            </a>
+                                        @endif
+                                    @endcan
                                 </div>
                                 <div class="media-body clearfix">
                                     {!! $answer->body_html !!}
                                     <div class="row">
+                                        {{---------------------ANSWER - CONTENT--------------------}}
                                         <div class="col-4">
                                             <div class="ml-auto">
                                                 @can('update', $answer)
@@ -94,6 +119,7 @@
                                             </div>
                                         </div>
                                         <div class="col-4"></div>
+                                        {{---------------------ANSWER - AUTHOR--------------------}}
                                         <div class="col-4">
                                             <span class="text-muted">Answered {{ $answer->created_date }}</span>
                                             <div class="media">
