@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Auth;
 class AnswerController extends Controller
 {
     /**
+     * AnswerController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return void

@@ -66,7 +66,7 @@
                                     <a href="" title="This answer is not useful" class="vote-down off">
                                         <i class="fas fa-caret-down fa-3x"></i>
                                     </a>
-                                    <a href="" title="Mark answer as best answer" class="vote-accepted">
+                                    <a href="" title="Mark answer as best answer" class="{{ $answer->status }}">
                                         <i class="fas fa-check fa-2x"></i>
                                     </a>
                                 </div>
